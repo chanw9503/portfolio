@@ -13,12 +13,5 @@ export default Car;
 
 const SVG = styled.svg`
   height: 30px;
-  width: 80px;
-  position: absolute;
-
-  ${({ moveCar }) =>
-    moveCar &&
-    css`
-      left: ${moveCar}px;
-    `}
+  width: 60px;
 `;
