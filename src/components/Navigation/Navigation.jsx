@@ -2,45 +2,57 @@ import React, { useState } from 'react';
 import { keyframes, styled } from 'styled-components';
 import Car from '../Car/Car';
 import Fumes from '../Car/Fumes';
+import { useSpring, a } from '@react-spring/web';
+import MoveCar from '../../Molecule/MoveCar/MoveCar';
+import { useSelector } from 'react-redux';
 
 const Navigation = () => {
-  const [carPosition, setCarPosition] = useState(0);
+  const data = useSelector((state) => state);
 
-  const mouseEnterHanlder = (index) => {
-    setCarPosition(index * 100);
-  };
+  console.log('data -30 = ', Number(data) - 30);
+
+  const { transform, width, opacity } = useSpring({
+    transform: `perspective(600px) translateX(${data ? Number(data) - 60 : -60}px)`,
+    opacity: data > 10 ? 1 : 0,
+    width: `${data ? Number(data) - 10 : 0}px`,
+    config: { mass: 5, tension: 500, friction: 80 },
+  });
 
   return (
     <Container>
       <UlBlock>
-        <LiBlock onMouseEnter={() => mouseEnterHanlder(1)}>Home</LiBlock>
-        <LiBlock onMouseEnter={() => mouseEnterHanlder(2)}>Resume</LiBlock>
-        <LiBlock onMouseEnter={() => mouseEnterHanlder(3)}>Portfolio</LiBlock>
-        <LiBlock onMouseEnter={() => mouseEnterHanlder(4)}>Github</LiBlock>
-        <LiBlock onMouseEnter={() => mouseEnterHanlder(5)}>Blog</LiBlock>
+        <LiBlock>Home</LiBlock>
+        <LiBlock>Resume</LiBlock>
+        <LiBlock>Portfolio</LiBlock>
+        <LiBlock>Github</LiBlock>
+        <LiBlock>Blog</LiBlock>
       </UlBlock>
-      <CarBlock>
-        <Car moveCar={200} />
-        <Fumes />
-      </CarBlock>
+      <ScrollMoveBlock>
+        <a.div style={{ transform }}>
+          <MoveCar />
+        </a.div>
+        <a.div style={{ width }}>
+          <RoadBlock />
+        </a.div>
+      </ScrollMoveBlock>
     </Container>
   );
 };
 
 export default Navigation;
 
-const slideAnimation = keyframes`
-  from {
-    transform: translateX(0);
-  } to{
-    transform: translateX(100px);
-  }
-`;
-
 const Container = styled.div`
   width: 100%;
-  height: 80px;
-  background-color: tomato;
+  height: 90px;
+  z-index: 10000;
+  background-color: white;
+
+  transform: ;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 `;
 
 const UlBlock = styled.ul`
@@ -59,4 +71,14 @@ const LiBlock = styled.li`
 const CarBlock = styled.div`
   position: relative;
   left: 30px;
+`;
+
+const ScrollMoveBlock = styled.div`
+  width: 100%;
+  height: 30px;
+`;
+
+const RoadBlock = styled.div`
+  border-top: 2px solid black;
+  width: 100%;
 `;

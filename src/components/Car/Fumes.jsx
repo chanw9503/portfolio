@@ -24,5 +24,5 @@ const SVG = styled.svg`
   height: 24px;
   width: 24px;
   position: absolute;
-  left: -5px;
+  left: -15px;
 `;
